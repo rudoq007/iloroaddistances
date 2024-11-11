@@ -30,3 +30,9 @@ loadKML(roadsKML, 'Roads');
 
 // Load Town Centres KML
 loadKML(townCentreKML, 'Town Centres');
+
+// Optional: Add markers manually for debugging purposes
+L.marker([-2.6831956, 141.3029833]).addTo(map).bindPopup("Vanimo");
+L.marker([-3.1378478, 142.3499287]).addTo(map).bindPopup("Wewak");
+L.marker([-3.5800228, 143.6583166]).addTo(map).bindPopup("Maprik");
+L.marker([-3.6274748, 143.0552973]).addTo(map).bindPopup("Aitape");
