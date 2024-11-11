@@ -38,6 +38,8 @@
       // Add other town centers here...
     };
 
+    let selectedTown = null;
+
     // Function to calculate distances using the Google Distance Matrix API
     function calculateDistance(fromLat, fromLon, toLat, toLon, townName) {
       const origin = new google.maps.LatLng(fromLat, fromLon);
@@ -61,22 +63,32 @@
       );
     }
 
-    // Add markers for the town centers and calculate distances when clicked
+    // Add markers for the town centers and allow selection
     for (const town in townCenters) {
       const { lat, lon } = townCenters[town];
       const marker = L.marker([lat, lon]).addTo(map);
       marker.bindPopup(town);
 
+      // Set the selected town when clicked
       marker.on('click', function() {
-        // When a town center marker is clicked, calculate distance to each road
-        roadsLayer.eachLayer((layer) => {
-          const latLng = layer.getLatLng ? layer.getLatLng() : null;
-          if (latLng) {
-            calculateDistance(latLng.lat, latLng.lng, lat, lon, town);
-          }
-        });
+        selectedTown = { name: town, lat: lat, lon: lon };
+        alert(`${town} selected. Now hover over a road to see the distance.`);
       });
     }
+
+    // Add mouseover event to calculate distance when hovering over roads
+    roadsLayer.eachLayer((layer) => {
+      layer.on('mouseover', function() {
+        if (selectedTown) {
+          const latLng = layer.getLatLng ? layer.getLatLng() : null;
+          if (latLng) {
+            calculateDistance(latLng.lat, latLng.lng, selectedTown.lat, selectedTown.lon, selectedTown.name);
+          }
+        } else {
+          alert("Please select a town center first.");
+        }
+      });
+    });
 
     // Google Maps API script to be loaded dynamically
     function loadGoogleMapsAPI() {
