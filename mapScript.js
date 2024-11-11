@@ -14,7 +14,7 @@
       padding: 0;
     }
     #map {
-      height: 80vh;
+      height: 80vh;  /* Ensuring the map container has height */
     }
     #controls {
       position: absolute;
@@ -60,23 +60,26 @@
   <div id="map"></div>
 
   <script>
-    // Initialize map
-    const map = L.map('map').setView([-3.7, 143.5], 8);
+    // Ensure Leaflet map initialization is done correctly
+    try {
+      const map = L.map('map').setView([-3.7, 143.5], 8); // Set initial view
+      console.log("Map initialized successfully");
+    } catch (error) {
+      console.error("Error initializing the map:", error);
+    }
 
     // Add OpenStreetMap tile layer
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors',
-      maxZoom: 18
-    }).addTo(map);
+    try {
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 18
+      }).addTo(map);
+      console.log("Tile layer added successfully");
+    } catch (error) {
+      console.error("Error adding tile layer:", error);
+    }
 
-    // Towns and pre-calculated distances (simplified example, in reality, you would pull this data from an API or file)
-    const townCenters = {
-      wewak: { lat: -3.5800229, lng: 143.6583166, name: "Wewak" },
-      maprik: { lat: -3.6274748, lng: 143.0552973, name: "Maprik" },
-      vanimo: { lat: -2.693611, lng: 141.302222, name: "Vanimo" },
-      aitape: { lat: -3.030205, lng: 142.543429, name: "Aitape" }
-    };
-
+    // Towns and pre-calculated distances (simplified)
     const preCalculatedDistances = {
       "road1": {
         wewak: "120 km",
@@ -90,65 +93,48 @@
         vanimo: "80 km",
         aitape: "120 km"
       },
-      // Add more roads with pre-calculated distances
     };
 
     // Function to add a road with its distance info
     function addRoad(roadName, lat, lng) {
-      const roadMarker = L.marker([lat, lng]).addTo(map).bindPopup(`<b>${roadName}</b>`);
-      
-      // Store the distances in the popup for easier access
-      roadMarker.on('mouseover', function () {
-        const distances = preCalculatedDistances[roadName] || {};
-        let popupContent = `<b>${roadName}</b><br>`;
-        for (const town in distances) {
-          popupContent += `Distance to ${town}: ${distances[town]}<br>`;
-        }
-        roadMarker.setPopupContent(popupContent);
-        roadMarker.openPopup();
-      });
-
-      return roadMarker;
+      try {
+        const roadMarker = L.marker([lat, lng]).addTo(map).bindPopup(`<b>${roadName}</b>`);
+        roadMarker.on('mouseover', function () {
+          const distances = preCalculatedDistances[roadName] || {};
+          let popupContent = `<b>${roadName}</b><br>`;
+          for (const town in distances) {
+            popupContent += `Distance to ${town}: ${distances[town]}<br>`;
+          }
+          roadMarker.setPopupContent(popupContent);
+          roadMarker.openPopup();
+        });
+        console.log(`Road ${roadName} added successfully`);
+        return roadMarker;
+      } catch (error) {
+        console.error(`Error adding road ${roadName}:`, error);
+      }
     }
 
-    // Add roads manually (for demo, you would typically load this from a KML file or another source)
-    const roads = [
-      addRoad("road1", -3.6, 143.7),
-      addRoad("road2", -3.5, 143.4)
-    ];
+    // Add roads manually (for demo)
+    try {
+      const roads = [
+        addRoad("road1", -3.6, 143.7),
+        addRoad("road2", -3.5, 143.4)
+      ];
+    } catch (error) {
+      console.error("Error adding roads:", error);
+    }
 
-    // Show all distances
+    // Event listeners for buttons
     document.getElementById('showAllDistances').addEventListener('click', function () {
+      console.log("Showing all distances");
       roads.forEach(function (road) {
         road.openPopup();
       });
     });
 
-    // Show distance to a specific town
-    function showDistancesToTown(town) {
-      roads.forEach(function (road) {
-        const distances = preCalculatedDistances[road.options.title] || {};
-        const distance = distances[town] || 'No data';
-        road.setPopupContent(`<b>${road.options.title}</b><br>Distance to ${town}: ${distance}`);
-        road.openPopup();
-      });
-    }
-
-    document.getElementById('showWewak').addEventListener('click', function () {
-      showDistancesToTown("wewak");
-    });
-    document.getElementById('showMaprik').addEventListener('click', function () {
-      showDistancesToTown("maprik");
-    });
-    document.getElementById('showVanimo').addEventListener('click', function () {
-      showDistancesToTown("vanimo");
-    });
-    document.getElementById('showAitape').addEventListener('click', function () {
-      showDistancesToTown("aitape");
-    });
-
-    // Clear distances
     document.getElementById('clearDistances').addEventListener('click', function () {
+      console.log("Clearing distances");
       roads.forEach(function (road) {
         road.closePopup();
       });
