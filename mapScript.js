@@ -13,6 +13,7 @@ const townCentreKML = 'https://raw.githubusercontent.com/rudoq007/iloroaddistanc
 
 // Function to load KML files and add them to the map
 function loadKML(url, layerName) {
+  console.log(`Attempting to load ${layerName} KML from: ${url}`);  // Debug log
   omnivore.kml(url)
     .on('ready', function() {
       console.log(`${layerName} KML loaded successfully`);
