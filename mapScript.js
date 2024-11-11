@@ -10,8 +10,9 @@
 </head>
 <body>
   <div id="map" style="height: 600px;"></div>
+
   <script>
-    // Initialize map
+    // Initialize map with a center point and zoom level
     const map = L.map('map').setView([-3.7, 143.5], 8);
 
     // Add OpenStreetMap tile layer
@@ -20,26 +21,32 @@
       maxZoom: 18
     }).addTo(map);
 
-    // Load KML file for roads (ILO ROAD INTERVENTIONS)
-    const roadsLayer = omnivore.kml('https://raw.githubusercontent.com/rudoq007/iloroaddistances/main/ILO%20ROAD%20INTERVENTIONS.kml')
-      .on('ready', function() {
-        map.fitBounds(roadsLayer.getBounds());  // Zoom the map to fit the KML content
-      })
-      .on('error', function(error) {
-        console.error("Error loading roads KML:", error);
-      })
-      .addTo(map);
-
-    // Load KML file for town centers
+    // Check if KML URLs are correct (logs to console)
+    const roadsKML = 'https://raw.githubusercontent.com/rudoq007/iloroaddistances/main/ILO%20ROAD%20INTERVENTIONS.kml';
     const townCentreKML = 'https://raw.githubusercontent.com/rudoq007/iloroaddistances/main/Town%20Centres.kml';
-    const townCentreLayer = omnivore.kml(townCentreKML)
-      .on('ready', function() {
-        map.fitBounds(townCentreLayer.getBounds());  // Adjust map to fit the town centers
-      })
-      .on('error', function(error) {
-        console.error("Error loading town centers KML:", error);
-      })
-      .addTo(map);
+
+    console.log('Roads KML:', roadsKML);
+    console.log('Town Centres KML:', townCentreKML);
+
+    // Function to load KML files and add them to the map
+    function loadKML(url, layerName) {
+      omnivore.kml(url)
+        .on('ready', function() {
+          console.log(`${layerName} KML loaded successfully`);
+          map.fitBounds(this.getBounds());  // Fit the map to the bounds of the KML data
+        })
+        .on('error', function(error) {
+          console.error(`Error loading ${layerName} KML:`, error);
+        })
+        .addTo(map);
+    }
+
+    // Load Roads KML
+    loadKML(roadsKML, 'Roads');
+
+    // Load Town Centres KML
+    loadKML(townCentreKML, 'Town Centres');
+
   </script>
 </body>
 </html>
