@@ -1,3 +1,4 @@
+# .github/workflows/deploy.yml
 name: Build and Deploy
 
 on:
@@ -13,11 +14,14 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
 
-      # Create a JS file with your API key from the secret
+      # Inject the Google Maps API key into config.js
       - name: Inject Google Maps API key
         run: |
           echo "const API_KEY = '${{ secrets.GOOGLE_MAPS_API_KEY }}';" > ./config.js
 
-      # Deploy to GitHub Pages
+      # Continue with your deployment steps here (e.g., deploy to GitHub Pages)
       - name: Deploy to GitHub Pages
-        # Assuming you have a GitHub Pages deployment action or script here
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .  # Adjust the directory based on your build output
