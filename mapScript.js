@@ -77,32 +77,36 @@
     }
 
     // Add mouseover event to calculate distance when hovering over roads
-    roadsLayer.eachLayer((layer) => {
-      layer.on('mouseover', function() {
-        if (selectedTown) {
-          const latLng = layer.getLatLng ? layer.getLatLng() : null;
-          if (latLng) {
+    roadsLayer.eachLayer(function(layer) {
+      if (layer.getLatLng) {
+        layer.on('mouseover', function(event) {
+          if (selectedTown) {
+            const latLng = event.latlng; // Use latLng from the event
             calculateDistance(latLng.lat, latLng.lng, selectedTown.lat, selectedTown.lon, selectedTown.name);
+          } else {
+            alert("Please select a town center first.");
           }
-        } else {
-          alert("Please select a town center first.");
-        }
-      });
+        });
+      }
     });
 
-    // Google Maps API script to be loaded dynamically
+    // Load Google Maps API dynamically
     function loadGoogleMapsAPI() {
       const script = document.createElement('script');
       script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBtGa1iR1TXerNJwfQjYy1u4pv26Q9Nr94&callback=initializeGoogleMapsAPI`;
+      script.async = true;
+      script.defer = true;
       document.body.appendChild(script);
     }
 
+    // Callback when Google Maps API is ready
     function initializeGoogleMapsAPI() {
       console.log("Google Maps API loaded successfully!");
     }
 
     // Load Google Maps API
     loadGoogleMapsAPI();
+
   </script>
 </body>
 </html>
