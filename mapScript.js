@@ -1,5 +1,5 @@
 // Initialize map with a center point and zoom level
-const map = L.map('map').setView([-3.7, 143.5], 8);
+const map = L.map('map').setView([-3.7, 143.5], 8);  // Set a reasonable initial view
 
 // Add OpenStreetMap tile layer
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
