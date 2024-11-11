@@ -11,10 +11,14 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 const wewak = L.marker([-3.5800229, 143.6583166]).addTo(map).bindPopup("<b>Wewak Town</b><br>East Sepik Province");
 const maprik = L.marker([-3.6274748, 143.0552973]).addTo(map).bindPopup("<b>Maprik Town</b><br>East Sepik Province");
 const vanimo = L.marker([-2.693611, 141.302222]).addTo(map).bindPopup("<b>Vanimo Town</b><br>West Sepik Province");
-const aitape = L.marker([-3.1394, 142.3536]).addTo(map).bindPopup("<b>Aitape Town</b><br>West Sepik Province"); // Aitape coordinates
 
-// Load the KML for roads
-const roadsLayer = omnivore.kml('./ILO_ROAD_INTERVENTIONS.kml') 
+// Verify Aitape coordinates and add it with a debug message
+const aitapeCoordinates = [-3.1394, 142.3536];
+const aitape = L.marker(aitapeCoordinates).addTo(map).bindPopup("<b>Aitape Town</b><br>West Sepik Province");
+console.log("Aitape marker added:", aitapeCoordinates);
+
+// Load the KML for roads with a compatibility check for Edge
+const roadsLayer = omnivore.kml('./ILO_ROAD_INTERVENTIONS.kml')
   .on('ready', function () {
     console.log("KML file loaded successfully.");
     map.fitBounds(roadsLayer.getBounds());
@@ -24,11 +28,11 @@ const roadsLayer = omnivore.kml('./ILO_ROAD_INTERVENTIONS.kml')
   })
   .addTo(map);
 
-// Function to calculate distances to town centers using OpenRouteService
+// Function to calculate distances to town centers
 function calculateDistances(roadCenter, roadName, layer) {
   const osrmUrl = `https://api.openrouteservice.org/v2/directions/driving-car?api_key=YOUR_API_KEY`; // Replace with your actual API key
 
-  // Calculate distance to a single town
+  // Function to get the distance to a single town
   function getDistanceToTown(townMarker, townName) {
     const townCenter = [townMarker.getLatLng().lng, townMarker.getLatLng().lat];
     const roadCoord = [roadCenter.lng, roadCenter.lat];
@@ -59,29 +63,27 @@ function calculateDistances(roadCenter, roadName, layer) {
     });
   }
 
-  // Fetch distances for each town and display them in popup
+  // Calculate distances for each town and display in popup
   Promise.all([
     getDistanceToTown(wewak, "Wewak"),
     getDistanceToTown(maprik, "Maprik"),
     getDistanceToTown(vanimo, "Vanimo"),
-    getDistanceToTown(aitape, "Aitape") // Added Aitape to the calculations
+    getDistanceToTown(aitape, "Aitape") // Aitape added to the calculation
   ]).then(distances => {
     const [wewakDistance, maprikDistance, vanimoDistance, aitapeDistance] = distances;
 
-    // Construct the popup content
     let popupContent = `<b>${roadName}</b><br>`;
     popupContent += `Distance to Wewak: ${wewakDistance}<br>`;
     popupContent += `Distance to Maprik: ${maprikDistance}<br>`;
     popupContent += `Distance to Vanimo: ${vanimoDistance}<br>`;
     popupContent += `Distance to Aitape: ${aitapeDistance}`; // Display Aitape distance
 
-    // Bind the popup with the calculated distances
     layer.bindPopup(popupContent);
     layer.openPopup();
   });
 }
 
-// Loop through each road and add hover event listener
+// Add hover event to each road feature
 roadsLayer.on('mouseover', function (e) {
   const layer = e.layer;
   const roadName = layer.feature && layer.feature.properties ? layer.feature.properties.name : "Unnamed Road";
