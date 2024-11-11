@@ -13,7 +13,7 @@ const maprik = L.marker([-3.6274748, 143.0552973]).addTo(map).bindPopup("<b>Mapr
 const vanimo = L.marker([-2.693611, 141.302222]).addTo(map).bindPopup("<b>Vanimo Town</b><br>West Sepik Province");
 
 // Load the KML for roads
-const roadsLayer = omnivore.kml('./ILO ROAD INTERVENTIONS.kml') // Relative path to the KML file
+const roadsLayer = omnivore.kml('ILO ROAD INTERVENTIONS.kml') // Relative path to the KML file
   .on('ready', function () {
     map.fitBounds(roadsLayer.getBounds()); // Fit map bounds to show all roads
   })
@@ -24,20 +24,21 @@ const roadsLayer = omnivore.kml('./ILO ROAD INTERVENTIONS.kml') // Relative path
 
 // Function to calculate distances to town centers
 function calculateDistances(roadCenter, roadName, layer) {
-  // Define your local OSRM server URL for routing (replace with your server URL if different)
-  const osrmUrl = "http://localhost:5000/route/v1/driving/";
+  // OpenRouteService URL and API key for routing
+  const osrmUrl = "https://api.openrouteservice.org/v2/directions/driving-car";
+  const apiKey = "5b3ce3597851110001cf6248d107ce79579a4f47a889399db06e998b"; // Your API Key
 
   // Function to calculate distance to a town
   function getDistanceToTown(townMarker, townName) {
     const townCenter = { lat: townMarker.getLatLng().lat, lng: townMarker.getLatLng().lng };
-    const url = `${osrmUrl}${roadCenter.lng},${roadCenter.lat};${townCenter.lng},${townCenter.lat}?overview=false&geometries=geojson`;
+    const url = `${osrmUrl}?api_key=${apiKey}&start=${roadCenter.lng},${roadCenter.lat}&end=${townCenter.lng},${townCenter.lat}&instructions=false`;
 
-    // Make an HTTP request to the OSRM API for the route distance
+    // Make an HTTP request to the OpenRouteService API for the route distance
     return fetch(url)
       .then(response => response.json())
       .then(data => {
-        if (data.routes && data.routes[0]) {
-          const routeDistance = data.routes[0].legs[0].distance; // Distance in meters
+        if (data.features && data.features[0] && data.features[0].properties.segments) {
+          const routeDistance = data.features[0].properties.segments[0].distance; // Distance in meters
           const distanceInKm = (routeDistance / 1000).toFixed(2); // Convert to kilometers
           return distanceInKm;
         } else {
