@@ -11,15 +11,16 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 const wewak = L.marker([-3.5800229, 143.6583166]).addTo(map).bindPopup("<b>Wewak Town</b><br>East Sepik Province");
 const maprik = L.marker([-3.6274748, 143.0552973]).addTo(map).bindPopup("<b>Maprik Town</b><br>East Sepik Province");
 const vanimo = L.marker([-2.693611, 141.302222]).addTo(map).bindPopup("<b>Vanimo Town</b><br>West Sepik Province");
+const aitape = L.marker([-3.1394, 142.3536]).addTo(map).bindPopup("<b>Aitape Town</b><br>West Sepik Province"); // Aitape coordinates
 
 // Load the KML for roads
-const roadsLayer = omnivore.kml('./ILO_ROAD_INTERVENTIONS.kml') // Updated KML file name
+const roadsLayer = omnivore.kml('./ILO_ROAD_INTERVENTIONS.kml') 
   .on('ready', function () {
-    console.log("KML file loaded successfully."); // Debugging
+    console.log("KML file loaded successfully.");
     map.fitBounds(roadsLayer.getBounds());
   })
   .on('error', function (error) {
-    console.error("Error loading KML file:", error); // Debugging
+    console.error("Error loading KML file:", error);
   })
   .addTo(map);
 
@@ -45,7 +46,7 @@ function calculateDistances(roadCenter, roadName, layer) {
       if (data.routes && data.routes[0]) {
         const routeDistance = data.routes[0].summary.distance;
         const distanceInKm = (routeDistance / 1000).toFixed(2);
-        console.log(`Distance to ${townName} for ${roadName}: ${distanceInKm} km`); // Debugging
+        console.log(`Distance to ${townName} for ${roadName}: ${distanceInKm} km`);
         return `${distanceInKm} km`;
       } else {
         console.error(`No route found for road: ${roadName} to ${townName}`);
@@ -62,19 +63,21 @@ function calculateDistances(roadCenter, roadName, layer) {
   Promise.all([
     getDistanceToTown(wewak, "Wewak"),
     getDistanceToTown(maprik, "Maprik"),
-    getDistanceToTown(vanimo, "Vanimo")
+    getDistanceToTown(vanimo, "Vanimo"),
+    getDistanceToTown(aitape, "Aitape") // Added Aitape to the calculations
   ]).then(distances => {
-    const [wewakDistance, maprikDistance, vanimoDistance] = distances;
+    const [wewakDistance, maprikDistance, vanimoDistance, aitapeDistance] = distances;
 
     // Construct the popup content
     let popupContent = `<b>${roadName}</b><br>`;
     popupContent += `Distance to Wewak: ${wewakDistance}<br>`;
     popupContent += `Distance to Maprik: ${maprikDistance}<br>`;
-    popupContent += `Distance to Vanimo: ${vanimoDistance}`;
+    popupContent += `Distance to Vanimo: ${vanimoDistance}<br>`;
+    popupContent += `Distance to Aitape: ${aitapeDistance}`; // Display Aitape distance
 
     // Bind the popup with the calculated distances
     layer.bindPopup(popupContent);
-    layer.openPopup(); // Automatically open the popup after calculating distances
+    layer.openPopup();
   });
 }
 
@@ -84,6 +87,6 @@ roadsLayer.on('mouseover', function (e) {
   const roadName = layer.feature && layer.feature.properties ? layer.feature.properties.name : "Unnamed Road";
   const roadCenter = layer.getBounds().getCenter();
 
-  console.log("Hovering over road:", roadName); // Debugging
+  console.log("Hovering over road:", roadName);
   calculateDistances(roadCenter, roadName, layer);
 });
