@@ -1,57 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
-<Placemark id="1.2.1">
-	<name>Town Centres</name>
-	<address>Sandaun Province</address>
-	<snippet>Sandaun Province</snippet>
-	<description><![CDATA[<!DOCTYPE html><html><head></head><body><script type="text/javascript">window.location.href="https://www.google.com/earth/rpc/entity?lat=-2.69189825&lng=141.3042219&fid=0x686c1f0604fdd157:0x670438c5319e57a2&hl=en&gl=pg&client=earth-client&cv=7.3.6.9796&useragent=GoogleEarth/7.3.6.9796(Windows;Microsoft Windows (6.2.9200.0);en;kml:2.2;client:Pro;type:default)";</script></body></html>]]></description>
-	<styleUrl>#geocode</styleUrl>
-	<ExtendedData>
-		<Data name="placepageUri">
-			<value>https://www.google.com/earth/rpc/entity?lat=-2.69189825&amp;lng=141.3042219&amp;fid=0x686c1f0604fdd157:0x670438c5319e57a2&amp;hl=en&amp;gl=pg&amp;client=earth-client&amp;cv=7.3.6.9796&amp;useragent=GoogleEarth/7.3.6.9796(Windows;Microsoft Windows (6.2.9200.0);en;kml:2.2;client:Pro;type:default)</value>
-		</Data>
-	</ExtendedData>
-	<MultiGeometry>
-		<MultiGeometry>
-			<Point>
-				<coordinates>141.3029833,-2.6831956,0</coordinates>
-			</Point>
-			<LinearRing>
-				<coordinates>
-					141.2680189099409,-2.709418892544341,0 141.2680189099409,-2.656972307455658,0 141.3379476900591,-2.656972307455658,0 141.3379476900591,-2.709418892544341,0 141.2680189099409,-2.709418892544341,0 
-				</coordinates>
-			</LinearRing>
-		</MultiGeometry>
-		<MultiGeometry>
-			<Point>
-				<coordinates>142.3499287,-3.1378478,0</coordinates>
-			</Point>
-			<LinearRing>
-				<coordinates>
-					142.3324534795741,-3.150954215319416,0 142.3324534795741,-3.124741384680584,0 142.3674039204259,-3.124741384680584,0 142.3674039204259,-3.150954215319416,0 142.3324534795741,-3.150954215319416,0 
-				</coordinates>
-			</LinearRing>
-		</MultiGeometry>
-		<MultiGeometry>
-			<Point>
-				<coordinates>143.6583166,-3.580022899999999,0</coordinates>
-			</Point>
-			<LinearRing>
-				<coordinates>
-					143.5884465556951,-3.632425433228692,0 143.5884465556951,-3.527620366771307,0 143.7281866443049,-3.527620366771307,0 143.7281866443049,-3.632425433228692,0 143.5884465556951,-3.632425433228692,0 
-				</coordinates>
-			</LinearRing>
-		</MultiGeometry>
-		<MultiGeometry>
-			<Point>
-				<coordinates>143.0552973,-3.6274748,0</coordinates>
-			</Point>
-			<LinearRing>
-				<coordinates>
-					143.0378308197614,-3.640574660178935,0 143.0378308197614,-3.614374939821064,0 143.0727637802386,-3.614374939821064,0 143.0727637802386,-3.640574660178935,0 143.0378308197614,-3.640574660178935,0 
-				</coordinates>
-			</LinearRing>
-		</MultiGeometry>
-	</MultiGeometry>
-</Placemark>
+  <Placemark id="1.2.1">
+    <name>Town Centres</name>
+    <address>Sandaun Province</address>
+    <snippet>Sandaun Province</snippet>
+    <description><![CDATA[<!DOCTYPE html><html><head></head><body><script type="text/javascript">window.location.href="https://www.google.com/earth/rpc/entity?lat=-2.69189825&lng=141.3042219&fid=0x686c1f0604fdd157:0x670438c5319e57a2&hl=en&gl=pg&client=earth-client&cv=7.3.6.9796&useragent=GoogleEarth/7.3.6.9796(Windows;Microsoft Windows (6.2.9200.0);en;kml:2.2;client:Pro;type:default)";</script></body></html>]]></description>
+    <styleUrl>#geocode</styleUrl>
+    <ExtendedData>
+      <Data name="placepageUri">
+        <value>https://www.google.com/earth/rpc/entity?lat=-2.69189825&amp;lng=141.3042219&amp;fid=0x686c1f0604fdd157:0x670438c5319e57a2&amp;hl=en&amp;gl=pg&amp;client=earth-client&amp;cv=7.3.6.9796&amp;useragent=GoogleEarth/7.3.6.9796(Windows;Microsoft Windows (6.2.9200.0);en;kml:2.2;client:Pro;type:default)</value>
+      </Data>
+    </ExtendedData>
+    <MultiGeometry>
+      <!-- Vanimo Town Centre -->
+      <Point>
+        <coordinates>141.3029833,-2.6831956,0</coordinates>
+      </Point>
+      <LinearRing>
+        <coordinates>
+          141.2680189099409,-2.709418892544341,0 141.2680189099409,-2.656972307455658,0 141.3379476900591,-2.656972307455658,0 141.3379476900591,-2.709418892544341,0 141.2680189099409,-2.709418892544341,0
+        </coordinates>
+      </LinearRing>
+
+      <!-- Wewak Town Centre -->
+      <Point>
+        <coordinates>142.3499287,-3.1378478,0</coordinates>
+      </Point>
+      <LinearRing>
+        <coordinates>
+          142.3324534795741,-3.150954215319416,0 142.3324534795741,-3.124741384680584,0 142.3674039204259,-3.124741384680584,0 142.3674039204259,-3.150954215319416,0 142.3324534795741,-3.150954215319416,0
+        </coordinates>
+      </LinearRing>
+
+      <!-- Maprik Town Centre -->
+      <Point>
+        <coordinates>143.6583166,-3.580022899999999,0</coordinates>
+      </Point>
+      <LinearRing>
+        <coordinates>
+          143.5884465556951,-3.632425433228692,0 143.5884465556951,-3.527620366771307,0 143.7281866443049,-3.527620366771307,0 143.7281866443049,-3.632425433228692,0 143.5884465556951,-3.632425433228692,0
+        </coordinates>
+      </LinearRing>
+
+      <!-- Aitape Town Centre -->
+      <Point>
+        <coordinates>143.0552973,-3.6274748,0</coordinates>
+      </Point>
+      <LinearRing>
+        <coordinates>
+          143.0378308197614,-3.640574660178935,0 143.0378308197614,-3.614374939821064,0 143.0727637802386,-3.614374939821064,0 143.0727637802386,-3.640574660178935,0 143.0378308197614,-3.640574660178935,0
+        </coordinates>
+      </LinearRing>
+    </MultiGeometry>
+  </Placemark>
 </kml>
