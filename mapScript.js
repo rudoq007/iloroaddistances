@@ -1,20 +1,21 @@
-// Load the API key from config.js and initialize the map
+// Load the API key from the config file and initialize the map
+let API_KEY;
+
 fetch('./config.js')
-  .then(response => response.text())
+  .then(response => {
+    if (!response.ok) throw new Error("Network response was not ok");
+    return response.text();
+  })
   .then(text => {
-    eval(text);  // Loads API_KEY from config.js
-    initializeMap();  // Initialize map after loading the API key
+    eval(text); // This should define the API_KEY variable from config.js
+    console.log("API Key Loaded:", API_KEY); // Debug log
+    initializeMap(); // Call map initialization after loading API key
   })
   .catch(error => console.error('Error loading API key:', error));
 
-// Initialize map with Google Maps tile layer
+// Initialize the map with Google Maps tile layer
 function initializeMap() {
-  if (typeof API_KEY === 'undefined') {
-    console.error('API_KEY is not defined');
-    return;
-  }
-
-  const googleLayer = L.tileLayer(`https://maps.googleapis.com/maps/api/tile/{z}/{x}/{y}?key=${API_KEY}`, {
+  const googleLayer = L.tileLayer(`https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}&key=${API_KEY}`, {
     attribution: '© Google',
     maxZoom: 18
   });
@@ -22,17 +23,17 @@ function initializeMap() {
   const map = L.map('map', {
     center: [-3.7, 143.5],
     zoom: 8,
-    layers: [googleLayer]  // Initialize with Google Maps Layer
+    layers: [googleLayer]
   });
 
   // Load KML files
   const roadsKML = 'https://raw.githubusercontent.com/rudoq007/iloroaddistances/main/ILO%20ROAD%20INTERVENTIONS.kml';
   const townCentreKML = 'https://raw.githubusercontent.com/rudoq007/iloroaddistances/main/Town%20Centres.kml';
-  
+
   loadKML(map, roadsKML, 'Roads');
   loadKML(map, townCentreKML, 'Town Centres');
 
-  // Optional: Add debug markers
+  // Optional: Add manual markers for debugging
   addDebugMarkers(map);
 }
 
@@ -42,7 +43,7 @@ function loadKML(map, url, layerName) {
   omnivore.kml(url)
     .on('ready', function () {
       console.log(`${layerName} KML loaded successfully`);
-      map.fitBounds(this.getBounds());
+      map.fitBounds(this.getBounds());  // Fit map to KML bounds
     })
     .on('error', function (error) {
       console.error(`Error loading ${layerName} KML:`, error);
