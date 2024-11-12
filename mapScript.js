@@ -44,6 +44,30 @@ function loadKML(map, url, layerName) {
     .on('ready', function () {
       console.log(`${layerName} KML loaded successfully`);
       map.fitBounds(this.getBounds());  // Fit map to KML bounds
+
+      // Add interaction (click, hover) events for KML features
+      this.eachLayer(function (layer) {
+        layer.on({
+          click: function (e) {
+            alert(`Clicked on ${layerName} feature!`);
+            console.log("Feature Info:", e);
+          },
+          mouseover: function (e) {
+            layer.setStyle({
+              weight: 3,
+              color: 'blue',
+              opacity: 1
+            });
+          },
+          mouseout: function (e) {
+            layer.setStyle({
+              weight: 1,
+              color: 'red',
+              opacity: 0.7
+            });
+          }
+        });
+      });
     })
     .on('error', function (error) {
       console.error(`Error loading ${layerName} KML:`, error);
